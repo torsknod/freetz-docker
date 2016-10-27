@@ -8,7 +8,6 @@ ARG svn_path=trunk
 RUN umask 0022 && svn checkout http://svn.freetz.org/${svn_path}
 WORKDIR ${user_home}/${svn_path}
 # Make mirror sometimes fails due to bad links to sources, which are often seldom needed or not needed any more
-RUN make tools config-clean-deps && (make -k mirror || true)
-VOLUME ${user_home}/${svn_path}/.config
+RUN make oldconfig && make tools config-clean-deps && (make -k mirror || true)
 VOLUME ${user_home}/${svn_path}/images
-CMD make oldconfig && make
+CMD make
